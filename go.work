@@ -1,0 +1,17 @@
+go 1.21.1
+
+//services
+
+use ./services/gateway
+
+use ./services/identity
+
+use ./services/song
+
+// packages
+
+use ./packages/broker
+
+use ./packages/logging
+
+use ./packages/routes

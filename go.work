@@ -15,3 +15,5 @@ use ./packages/broker
 use ./packages/logging
 
 use ./packages/routes
+
+use ./packages/identity

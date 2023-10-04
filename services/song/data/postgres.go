@@ -7,11 +7,15 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type DB interface {
+	AddSong(id int64, name string) error
+}
+
 type PostgressDatabase struct {
 	db *sqlx.DB
 }
 
-func NewPostgresDatabase() (*PostgressDatabase, error) {
+func NewPostgresDatabase() (DB, error) {
 	db_string := os.Getenv("DB_STRING")
 	db, err := sqlx.Open("postgres", db_string)
 	if err != nil {
@@ -34,11 +38,18 @@ func NewPostgresDatabase() (*PostgressDatabase, error) {
 }
 
 func init_db(db *sqlx.DB) error {
-	_, err := db.Exec(`SELECT 'CREATE DATABASE song' 
-	WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'song')`)
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS songs (
+		id bigint,
+		name varchar(255)
+	);`)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (p *PostgressDatabase) AddSong(id int64, name string) error {
+	_, err := p.db.Exec(`INSERT INTO songs (id, name) VALUES (? , ?)`, id, name)
+	return err
 }

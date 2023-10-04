@@ -9,12 +9,16 @@ replace github.com/nickonos/Spotify/packages/routes => ../../packages/routes
 
 replace github.com/nickonos/Spotify/packages/broker => ../../packages/broker
 
+replace github.com/nickonos/Spotify/packages/identity => ../../packages/identity
+
 require github.com/nickonos/Spotify/packages/logging v0.0.0
 
 require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
 	github.com/nickonos/Spotify/packages/broker v0.0.0
+	github.com/nickonos/Spotify/packages/identity v0.0.0
+	github.com/nickonos/Spotify/packages/routes v0.0.0-00010101000000-000000000000
 )
 
 require (

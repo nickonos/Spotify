@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/nickonos/Spotify/packages/broker"
+	"github.com/nickonos/Spotify/packages/identity"
 	"github.com/nickonos/Spotify/services/song/api"
 	"github.com/nickonos/Spotify/services/song/data"
 	"github.com/nickonos/Spotify/services/song/service"
@@ -14,9 +15,11 @@ func main() {
 	db, err := data.NewPostgresDatabase()
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
-	srv := service.NewSongService(db)
+	id := identity.NewIdentityHelper(brk)
+	srv := service.NewSongService(db, id)
 	handler := api.NewAPIHandler(srv, brk)
 
 	handler.Subscribe()

@@ -20,16 +20,16 @@ type Broker struct {
 	keyValue     nats.KeyValue
 }
 
-type Response[D any] struct {
-	data D
-	err  string
+type Response[D any] interface {
+	~struct {
+		Data D
+		err  string
+	}
+	Subject() string
 }
 
-type Route[Req any, Res any] interface {
-	~struct {
-		response Req
-		request  Response[Res]
-	}
+type Message interface {
+	Subject() string
 }
 
 func newBroker(nc *nats.Conn, js nats.JetStreamContext) *Broker {
@@ -160,7 +160,7 @@ func Request[M any, R any](broker *Broker, message M, dst *R) error {
 	return nil
 }
 
-func Respond[D any](broker *Broker, message Response[D], raw *nats.Msg) error {
+func Respond[Res Response[D], D any](broker *Broker, message Res, raw *nats.Msg) error {
 	data, err := json.Marshal(message)
 
 	if err != nil {
@@ -170,12 +170,12 @@ func Respond[D any](broker *Broker, message Response[D], raw *nats.Msg) error {
 	return raw.Respond(data)
 }
 
-func Subscribe[Ro Route[Req, Res], Req any, Res any](broker *Broker, cb func(message Req, raw *nats.Msg) (Res, error)) error {
+func Subscribe[Req Message, Res Response[D], D any](broker *Broker, cb func(message Req, raw *nats.Msg) (D, error)) error {
 	logger := log.NewLogger("broker")
 
 	// Create instance of M to get the subject
-	var r Ro
-	subject := reflect.TypeOf(r).Name()
+	var r Req
+	subject := r.Subject()
 
 	logger.Trace("Subscribing to " + subject)
 
@@ -189,8 +189,8 @@ func Subscribe[Ro Route[Req, Res], Req any, Res any](broker *Broker, cb func(mes
 		}
 
 		res, err := cb(message, msg)
-		resp := Response[Res]{
-			data: res,
+		resp := Res{
+			Data: res,
 			err:  err.Error(),
 		}
 

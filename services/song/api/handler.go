@@ -20,7 +20,7 @@ func NewAPIHandler(s *service.SongService, b *broker.Broker) APIHandler {
 }
 
 func (api *APIHandler) Subscribe() {
-	broker.Subscribe[routes.CreateSong](api.broker, func(message routes.CreateSongRequest, raw *nats.Msg) (routes.CreateSongResponse, error) {
+	broker.Subscribe(api.broker, func(message routes.CreateSongRequest, raw *nats.Msg) (routes.CreateSongResponse, error) {
 		return routes.CreateSongResponse{}, nil
 	})
 }

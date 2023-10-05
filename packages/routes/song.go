@@ -17,4 +17,10 @@ type CreateSongRequest struct {
 	name string
 }
 
-type CreateSong broker.Route[CreateSongRequest, CreateSongResponse]
+type CreateSong struct {
+	response struct {
+		err  string
+		data CreateSongResponseData
+	}
+	request CreateSongRequest
+}

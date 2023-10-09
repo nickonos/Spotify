@@ -1,8 +1,6 @@
 package service
 
 import (
-	"reflect"
-
 	"github.com/nickonos/Spotify/packages/identity"
 	"github.com/nickonos/Spotify/packages/logging"
 	"github.com/nickonos/Spotify/packages/routes"
@@ -20,10 +18,6 @@ func NewSongService(db data.DB, id identity.IdentityHelper) *SongService {
 
 	logger.Trace("Song Service Started")
 
-	var temp routes.RequestCreateSong
-
-	logger.Trace(reflect.TypeOf(temp).Name())
-
 	return &SongService{
 		logger,
 		db,
@@ -31,11 +25,23 @@ func NewSongService(db data.DB, id identity.IdentityHelper) *SongService {
 	}
 }
 
-func (s *SongService) CreateSong(name string) error {
+func (s *SongService) CreateSong(name string) (routes.Song, error) {
 	id, err := s.id.NewID()
 	if err != nil {
-		return err
+		return routes.Song{}, err
 	}
 
-	return s.db.AddSong(id, name)
+	err = s.db.AddSong(id, name)
+	if err != nil {
+		return routes.Song{}, err
+	}
+
+	return routes.Song{
+		Id:   id,
+		Name: name,
+	}, nil
+}
+
+func (s *SongService) GetSong(name string) (routes.Song, error) {
+	return s.db.GetSong(name)
 }

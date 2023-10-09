@@ -1,26 +1,30 @@
 package routes
 
-import "github.com/nickonos/Spotify/packages/broker"
-
-type RequestCreateSong struct {
-	name string
+type Song struct {
+	Name string `db:"name"`
+	Id   int64  `db:"id"`
 }
 
-type CreateSongResponseData struct {
-	name string
-	id   int64
+type CreateSongResponse struct {
+	Song Song
 }
-
-type CreateSongResponse broker.Response[CreateSongResponseData]
 
 type CreateSongRequest struct {
-	name string
+	Name string
 }
 
-type CreateSong struct {
-	response struct {
-		err  string
-		data CreateSongResponseData
-	}
-	request CreateSongRequest
+func (CreateSongRequest) Subject() string {
+	return "create_song"
+}
+
+type GetSongResponse struct {
+	Song Song
+}
+
+type GetSongRequest struct {
+	Name string
+}
+
+func (GetSongRequest) Subject() string {
+	return "get_song"
 }

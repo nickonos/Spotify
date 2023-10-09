@@ -48,7 +48,7 @@ func NewIdentiyService(b *broker.Broker) (*IdentityService, error) {
 	return nil, errors.New("no free node id")
 }
 
-func (s *IdentityService) KeepAlive() {
+func (s *IdentityService) UpdateTTL() {
 	s.logger.Trace("Started Identity service")
 
 	// Start a goroutine to refresh the TTL of the node id every 5 minutes

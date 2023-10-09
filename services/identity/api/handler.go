@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/nickonos/Spotify/packages/broker"
+	"github.com/nickonos/Spotify/packages/routes"
 	"github.com/nickonos/Spotify/services/identity/service"
 )
 
@@ -19,14 +20,14 @@ func NewAPIHandler(s *service.IdentityService, b *broker.Broker) APIHandler {
 }
 
 func (api *APIHandler) Subscribe() {
-	// broker.Subscribe(api.broker, func(msg routes.GetID, raw *nats.Msg) {
+	broker.Subscribe(api.broker, func(msg routes.GetID) (routes.ResponseID, error) {
 
-	// 	id := api.service.GetID()
+		id := api.service.GetID()
 
-	// 	broker.Respond(api.broker, routes.ResponseID{
-	// 		Id: id,
-	// 	}, raw)
-	// })
+		return routes.ResponseID{
+			Id: id,
+		}, nil
+	})
 
-	api.service.KeepAlive()
+	api.service.UpdateTTL()
 }

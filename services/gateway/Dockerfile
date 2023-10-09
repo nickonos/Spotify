@@ -13,8 +13,8 @@ COPY services/gateway/ ./
 
 RUN go build
 
-LABEL org.opencontainers.image.source=https://github.com/nickonos/Spotify/gateway
+LABEL org.opencontainers.image.source=https://github.com/nickonos/Spotify/services/gateway
 
-EXPOSE 8080
+EXPOSE 5175
 
 CMD [ "./gateway" ]

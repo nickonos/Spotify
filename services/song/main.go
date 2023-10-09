@@ -12,7 +12,7 @@ import (
 
 func main() {
 	brk := broker.NewMessageBroker()
-	db, err := data.NewPostgresDatabase()
+	db, err := data.NewMysqlDatabase()
 	if err != nil {
 		log.Fatal(err)
 		return

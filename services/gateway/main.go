@@ -1,8 +1,19 @@
 package main
 
-import "github.com/nickonos/Spotify/packages/logging"
+import (
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/nickonos/Spotify/packages/broker"
+	"github.com/nickonos/Spotify/services/gateway/api"
+)
 
 func main() {
-	logger := logging.NewLogger("gateway")
-	logger.Print("hello")
+	app := fiber.New()
+	brk := broker.NewMessageBroker()
+
+	handler := api.NewAPIHandler(app, brk)
+	handler.SetupRoutes()
+
+	log.Fatal(app.Listen(":5175"))
 }

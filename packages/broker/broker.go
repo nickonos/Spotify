@@ -3,6 +3,7 @@ package broker
 import (
 	"bytes"
 	"encoding/gob"
+	"fmt"
 	"os"
 	"time"
 
@@ -16,6 +17,11 @@ type Broker struct {
 	nc           *nats.Conn
 	sessionStore nats.ObjectStore
 	keyValue     nats.KeyValue
+}
+
+type Response[D any] struct {
+	Data D
+	Err  string
 }
 
 type Message interface {
@@ -124,20 +130,20 @@ func UpdateKeyValue[T any](b *Broker, key string, value T, last uint64) (uint64,
 	return b.keyValue.Update(key, buffer.Bytes(), last)
 }
 
-func Request[M Message, R any](broker *Broker, message M, dst *R) error {
+func Request[M Message, R any](broker *Broker, message M, dst *Response[R]) error {
 	data, err := json.Marshal(message)
 
 	if err != nil {
 		return err
 	}
 
-	msg, err := broker.nc.Request(message.Subject(), data, time.Second*5)
+	msg, err := broker.nc.Request(fmt.Sprintf("request.%s", message.Subject()), data, time.Second*5)
 
 	if err != nil {
 		return err
 	}
 
-	var response R
+	var response Response[R]
 
 	err = json.Unmarshal(msg.Data, &response)
 
@@ -150,7 +156,7 @@ func Request[M Message, R any](broker *Broker, message M, dst *R) error {
 	return nil
 }
 
-func Respond[M Message](broker *Broker, message M, raw *nats.Msg) error {
+func Respond[Res Response[D], D any](broker *Broker, message Res, raw *nats.Msg) error {
 	data, err := json.Marshal(message)
 
 	if err != nil {
@@ -160,18 +166,17 @@ func Respond[M Message](broker *Broker, message M, raw *nats.Msg) error {
 	return raw.Respond(data)
 }
 
-func Subscribe[M Message](broker *Broker, cb func(message M, raw *nats.Msg)) error {
+func Subscribe[Req Message, D any](broker *Broker, cb func(message Req) (D, error)) error {
 	logger := log.NewLogger("broker")
 
 	// Create instance of M to get the subject
-	var m M
-
-	subject := m.Subject()
+	var r Req
+	subject := r.Subject()
 
 	logger.Trace("Subscribing to " + subject)
 
-	_, err := broker.nc.QueueSubscribe(subject, "job_workers", func(msg *nats.Msg) {
-		var message M
+	_, err := broker.nc.QueueSubscribe(fmt.Sprintf("request.%s", subject), "job_workers", func(msg *nats.Msg) {
+		var message Req
 
 		err := json.Unmarshal(msg.Data, &message)
 
@@ -179,7 +184,19 @@ func Subscribe[M Message](broker *Broker, cb func(message M, raw *nats.Msg)) err
 			return
 		}
 
-		cb(message, msg)
+		res, err := cb(message)
+		resp := Response[D]{
+			Data: res,
+		}
+
+		if err != nil {
+			resp.Err = err.Error()
+		}
+
+		err = Respond(broker, resp, msg)
+		if err != nil {
+			logger.Trace(err.Error())
+		}
 	})
 
 	return err

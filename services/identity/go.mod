@@ -17,7 +17,7 @@ require github.com/nickonos/Spotify/packages/broker v0.0.0
 
 require (
 	github.com/bwmarrin/snowflake v0.3.0
-	github.com/nats-io/nats.go v1.30.2
+	github.com/nats-io/nats.go v1.30.2 // indirect
 )
 
 require (

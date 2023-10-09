@@ -29,25 +29,30 @@ services:
       context: .
     environment:
       NATS_URL: nats://message_broker:4222
-      DB_STRING: postgres://root:root@song_db:5432?sslmode=disable
+      DB_STRING: root:root@tcp(song_db:3306)/song
     depends_on:
-      - message_broker
-      - song_db
+      song_db:
+        condition: service_healthy
+      message_broker:
+        condition: service_started
     links:
       - message_broker
       - song_db
-
+  
   song_db:
-    image: postgres:latest
+    image: mysql:8.1
     restart: always
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=song
+      MYSQL_DATABASE: song
+      MYSQL_ROOT_PASSWORD: root
     ports:
-      - '5432:5432'
+      - "3306:3306"
     volumes:
-      - postgres_db:/var/lib/postgresql/data
+      - song_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 30s
+      retries: 10
 
   message_broker:
     image: nats:latest
@@ -57,5 +62,5 @@ services:
     ports:
       - "8222:8222"
 volumes:
-  postgres_db:
+  song_db:
     driver: local

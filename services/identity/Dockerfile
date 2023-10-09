@@ -13,8 +13,6 @@ COPY services/identity/ ./
 
 RUN go build
 
-LABEL org.opencontainers.image.source=https://github.com/nickonos/Spotify/identity
-
-EXPOSE 8080
+LABEL org.opencontainers.image.source=https://github.com/nickonos/Spotify/services/identity
 
 CMD [ "./identity" ]

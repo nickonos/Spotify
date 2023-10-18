@@ -2,6 +2,7 @@ package broker
 
 import (
 	"bytes"
+	"context"
 	"encoding/gob"
 	"fmt"
 	"os"
@@ -166,7 +167,7 @@ func Respond[Res Response[D], D any](broker *Broker, message Res, raw *nats.Msg)
 	return raw.Respond(data)
 }
 
-func Subscribe[Req Message, D any](broker *Broker, cb func(message Req) (D, error)) error {
+func Subscribe[Req Message, D any](broker *Broker, cb func(ctx context.Context, message Req) (D, error)) error {
 	logger := log.NewLogger("broker")
 
 	// Create instance of M to get the subject
@@ -183,8 +184,8 @@ func Subscribe[Req Message, D any](broker *Broker, cb func(message Req) (D, erro
 		if err != nil {
 			return
 		}
-
-		res, err := cb(message)
+		ctx := context.Background()
+		res, err := cb(ctx, message)
 		resp := Response[D]{
 			Data: res,
 		}

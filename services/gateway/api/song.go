@@ -65,7 +65,25 @@ func (api *API) CreateSong(c *fiber.Ctx) error {
 	}
 
 	return c.Status(200).JSON(&fiber.Map{
-		"successs": true,
-		"data":     res.Data.Song,
+		"success": true,
+		"data":    res.Data.Song,
+	})
+}
+
+func (api *API) GetAllSongs(c *fiber.Ctx) error {
+	var req routes.GetSongsRequest
+
+	var res broker.Response[routes.GetSongsResponse]
+	err := broker.Request(api.broker, req, &res)
+	if err != nil {
+		return c.Status(500).JSON(&fiber.Map{
+			"success": false,
+			"error":   err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(&fiber.Map{
+		"success": true,
+		"data":    res.Data.Songs,
 	})
 }

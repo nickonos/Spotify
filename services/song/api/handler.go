@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+
 	"github.com/nickonos/Spotify/packages/broker"
 	"github.com/nickonos/Spotify/packages/routes"
 	"github.com/nickonos/Spotify/services/song/service"
@@ -19,8 +21,8 @@ func NewAPIHandler(s *service.SongService, b *broker.Broker) APIHandler {
 }
 
 func (api *APIHandler) Subscribe() {
-	broker.Subscribe(api.broker, func(message routes.CreateSongRequest) (routes.CreateSongResponse, error) {
-		song, err := api.service.CreateSong(message.Name)
+	broker.Subscribe(api.broker, func(ctx context.Context, message routes.CreateSongRequest) (routes.CreateSongResponse, error) {
+		song, err := api.service.CreateSong(ctx, message.Name)
 		if err != nil {
 			return routes.CreateSongResponse{}, err
 		}
@@ -30,9 +32,8 @@ func (api *APIHandler) Subscribe() {
 		}, nil
 	})
 
-	broker.Subscribe(api.broker, func(message routes.GetSongRequest) (routes.GetSongResponse, error) {
-		song, err := api.service.GetSong(message.Name)
-
+	broker.Subscribe(api.broker, func(ctx context.Context, message routes.GetSongRequest) (routes.GetSongResponse, error) {
+		song, err := api.service.GetSong(ctx, message.Name)
 		if err != nil {
 			return routes.GetSongResponse{}, err
 		}
@@ -40,6 +41,17 @@ func (api *APIHandler) Subscribe() {
 		return routes.GetSongResponse{
 			Song: song,
 		}, nil
+	})
 
+	broker.Subscribe(api.broker, func(ctx context.Context, message routes.GetSongsRequest) (routes.GetSongsResponse, error) {
+
+		songs, err := api.service.GetAllSongs(ctx)
+		if err != nil {
+			return routes.GetSongsResponse{}, err
+		}
+
+		return routes.GetSongsResponse{
+			Songs: songs,
+		}, nil
 	})
 }

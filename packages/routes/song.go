@@ -28,3 +28,14 @@ type GetSongRequest struct {
 func (GetSongRequest) Subject() string {
 	return "get_song"
 }
+
+type GetSongsRequest struct {
+}
+
+type GetSongsResponse struct {
+	Songs []Song
+}
+
+func (GetSongsRequest) Subject() string {
+	return "get_songs"
+}

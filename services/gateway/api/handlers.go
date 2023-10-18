@@ -22,5 +22,7 @@ func (api *API) SetupRoutes() {
 
 	// Song Routes
 	router.Get("/song", api.GetSong)
+	router.Get("/songs", api.GetAllSongs)
 	router.Post("/song", api.CreateSong)
+
 }

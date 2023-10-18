@@ -1,6 +1,7 @@
 package data
 
 import (
+	"context"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -9,8 +10,9 @@ import (
 )
 
 type DB interface {
-	AddSong(id int64, name string) error
-	GetSong(name string) (routes.Song, error)
+	AddSong(ctx context.Context, id int64, name string) error
+	GetSong(ctx context.Context, name string) (routes.Song, error)
+	GetAllSongs(ctx context.Context) ([]routes.Song, error)
 }
 
 type MysqlDatabase struct {
@@ -51,16 +53,36 @@ func init_db(db *sqlx.DB) error {
 	return nil
 }
 
-func (p *MysqlDatabase) AddSong(id int64, name string) error {
-	_, err := p.db.Exec(`INSERT INTO songs (id, name) VALUES (?, ?);`, id, name)
+func (p *MysqlDatabase) AddSong(ctx context.Context, id int64, name string) error {
+	_, err := p.db.ExecContext(ctx, `INSERT INTO songs (id, name) VALUES (?, ?);`, id, name)
 	return err
 }
 
-func (p *MysqlDatabase) GetSong(name string) (routes.Song, error) {
+func (p *MysqlDatabase) GetSong(ctx context.Context, name string) (routes.Song, error) {
 	var song routes.Song
-	err := p.db.QueryRowx(`SELECT id, name FROM songs WHERE name = ?`, name).StructScan(&song)
+	err := p.db.QueryRowxContext(ctx, `SELECT id, name FROM songs WHERE name = ?`, name).StructScan(&song)
 	if err != nil {
 		return routes.Song{}, err
 	}
 	return song, nil
+}
+
+func (p *MysqlDatabase) GetAllSongs(ctx context.Context) ([]routes.Song, error) {
+	var songs []routes.Song
+	rows, err := p.db.QueryxContext(ctx, "SELECT id, name FROM songs")
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var song routes.Song
+		err = rows.StructScan(&song)
+		if err != nil {
+			return nil, err
+		}
+
+		songs = append(songs, song)
+	}
+
+	return songs, nil
 }

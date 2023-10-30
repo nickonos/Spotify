@@ -1,6 +1,6 @@
 module github.com/nickonos/Spotify/packages/logging
 
-go 1.21.1
+go 1.21
 
 require github.com/rs/zerolog v1.31.0
 

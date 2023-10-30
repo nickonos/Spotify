@@ -1,6 +1,6 @@
 module github.com/nickonos/Spotify/services/song
 
-go 1.21.1
+go 1.21
 
 // import local packages
 replace github.com/nickonos/Spotify/packages/logging => ../../packages/logging

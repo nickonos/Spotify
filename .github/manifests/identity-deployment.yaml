@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+spec:
+  progressDeadlineSeconds: 300
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity
+  template:
+    metadata:
+      labels:
+        app: identity
+    spec:
+      containers:
+        name: identity
+        image: ghcr.io/nickonos/spotify/identity
+        ports:
+        - containerPort: 5175
+          name: rest
+          protocol: TCP

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: song
+spec:
+  progressDeadlineSeconds: 300
+  replicas: 1
+  selector:
+    matchLabels:
+      app: song
+  template:
+    metadata:
+      labels:
+        app: song
+    spec:
+      containers:
+        name: song
+        image: ghcr.io/nickonos/spotify/song
+        ports:
+        - containerPort: 5175
+          name: rest
+          protocol: TCP

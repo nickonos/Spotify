@@ -48,5 +48,25 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/nickonos/spotify/identity:latest -f services/identity/Dockerfile .
-          docker push ghcr.io/nickonos/spotify/identity:latest
+          docker build -t ghcr.io/nickonos/spotify/identity:${{ github.sha }} -f services/identity/Dockerfile .
+          docker push ghcr.io/nickonos/spotify/identity:${{ github.sha }}
+
+  deploy:
+  runs-on: personal-runner
+  needs: publish
+  if: github.event_name == 'push'
+  steps:
+    - name: Check out the repo
+      uses: actions/checkout@v3
+  
+  steps:
+    - name: Use personal context
+      run: kubectl config use-context i468166
+    
+    - name: Deploy
+      uses: azure/k8s-deploy@v4
+        manifests: |
+          .github/manifests/identity-deployment.yml
+          .github/manifests/identity-service.yml
+        images: |
+          ghcr.io/nickonos/spotify/identity:${{ github.sha }}      

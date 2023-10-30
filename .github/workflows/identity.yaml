@@ -3,12 +3,12 @@ name: { { ROUTE } }
 on:
   push:
     paths:
-      - "services/{{ROUTE}}/**"
+      - "services/identity/**"
     branches:
       - main
   pull_request:
     paths:
-      - "services/{{ROUTE}}/**"
+      - "services/identity/**"
     branches:
       - main
 
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: services/{{ROUTE}}
+        working-directory: services/identity
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -47,5 +47,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/nickonos/spotify/{{ROUTE}}:latest services -f services/{{ROUTE}}/Dockerfile
-          docker push ghcr.io/nickonos/spotify/{{ROUTE}}:latest
+          docker build -t ghcr.io/nickonos/spotify/identity:latest services -f services/identity/Dockerfile
+          docker push ghcr.io/nickonos/spotify/identity:latest

@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "services/{{ROUTE}}/**"
+      - ".github/**"
     branches:
       - main
   pull_request:

@@ -59,7 +59,6 @@ jobs:
     - name: Check out the repo
       uses: actions/checkout@v3
   
-  steps:
     - name: Use personal context
       run: kubectl config use-context i468166
     

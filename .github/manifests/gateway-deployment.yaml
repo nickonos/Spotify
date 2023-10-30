@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  progressDeadlineSeconds: 300
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        name: gateway
+        image: ghcr.io/nickonos/spotify/gateway
+        ports:
+        - containerPort: 5175
+          name: rest
+          protocol: TCP

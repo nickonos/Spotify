@@ -48,5 +48,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/nickonos/spotify/gateway:latest services -f services/gateway/Dockerfile
+          docker build -t ghcr.io/nickonos/spotify/gateway:latest -f services/gateway/Dockerfile .
           docker push ghcr.io/nickonos/spotify/gateway:latest

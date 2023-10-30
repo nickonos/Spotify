@@ -1,6 +1,6 @@
 module github.com/nickonos/Spotify/packages/broker
 
-go 1.21.1
+go 1.21
 
 replace github.com/nickonos/Spotify/packages/logging => ../logging
 

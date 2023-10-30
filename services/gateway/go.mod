@@ -31,7 +31,7 @@ require (
 	google.golang.org/protobuf v1.31.0 // indirect
 )
 
-go 1.21.1
+go 1.21
 
 require (
 	github.com/gofiber/fiber/v2 v2.49.2

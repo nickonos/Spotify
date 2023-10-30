@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "services/gateway/**"
+      - ".github/workflows/**"
     branches:
       - main
   pull_request:

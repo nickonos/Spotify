@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "services/identity/**"
+      - ".github/workflows/**"
     branches:
       - main
   pull_request:

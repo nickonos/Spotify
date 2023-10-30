@@ -65,8 +65,9 @@ jobs:
     
     - name: Deploy
       uses: azure/k8s-deploy@v4
+      with: 
         manifests: |
-          .github/manifests/{{ROUTE}}-deployment.yml
-          .github/manifests/{{ROUTE}}-service.yml
+          .github/manifests/{{ROUTE}}-deployment.yaml
+          .github/manifests/{{ROUTE}}-service.yaml
         images: |
           ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}      

@@ -65,8 +65,9 @@ jobs:
     
     - name: Deploy
       uses: azure/k8s-deploy@v4
+      with: 
         manifests: |
-          .github/manifests/song-deployment.yml
-          .github/manifests/song-service.yml
+          .github/manifests/song-deployment.yaml
+          .github/manifests/song-service.yaml
         images: |
           ghcr.io/nickonos/spotify/song:${{ github.sha }}      

@@ -52,21 +52,21 @@ jobs:
           docker push ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}
 
   deploy:
-  runs-on: personal-runner
-  needs: publish
-  if: github.event_name == 'push'
-  steps:
-    - name: Check out the repo
-      uses: actions/checkout@v3
-  
-    - name: Use personal context
-      run: kubectl config use-context i468166
+    runs-on: personal-runner
+    needs: publish
+    if: github.event_name == 'push'
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
     
-    - name: Deploy
-      uses: azure/k8s-deploy@v4
-      with: 
-        manifests: |
-          .github/manifests/{{ROUTE}}-deployment.yaml
-          .github/manifests/{{ROUTE}}-service.yaml
-        images: |
-          ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}      
+      - name: Use personal context
+        run: kubectl config use-context i468166
+      
+      - name: Deploy
+        uses: azure/k8s-deploy@v4
+        with: 
+          manifests: |
+            .github/manifests/{{ROUTE}}-deployment.yaml
+            .github/manifests/{{ROUTE}}-service.yaml
+          images: |
+            ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}      

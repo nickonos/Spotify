@@ -52,7 +52,7 @@ jobs:
           docker push ghcr.io/nickonos/spotify/identity:${{ github.sha }}
 
   deploy:
-    runs-on: personal-runner
+    runs-on: self-hosted
     needs: publish
     if: github.event_name == 'push'
     steps:

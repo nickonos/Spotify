@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "services/song/**"
+      - ".github/workflows/**"
     branches:
       - main
   pull_request:

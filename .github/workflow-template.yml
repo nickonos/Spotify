@@ -58,6 +58,9 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+
+      - name: Kubectl Login
+        run: kubectl-vsphere login --server=${{ secrets.SERVER }} --vsphere-username ${{ secrets.USERNAME }} --insecure-skip-tls-verify
     
       - name: Use personal context
         run: kubectl config use-context i468166

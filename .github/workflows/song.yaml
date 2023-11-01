@@ -58,10 +58,15 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+      
+      - name: Connect with VPN
+        run: |
+          cd ~/cisco/anyconnect/bin
+          expect script.exp
 
       - name: Kubectl Login
         run: ~/vsphere-plugin/bin/kubectl-vsphere login --server=${{ secrets.SERVER }} --vsphere-username ${{ secrets.USERNAME }} --insecure-skip-tls-verify
-    
+
       - name: Use personal context
         run: kubectl config use-context i468166
       

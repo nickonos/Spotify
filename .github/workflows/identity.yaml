@@ -68,6 +68,6 @@ jobs:
           manifests: |
             .github/manifests/identity-deployment.yaml
             .github/manifests/identity-service.yaml
+          namespace: student
           images: |
             ghcr.io/nickonos/spotify/identity:${{ github.sha }}
-                

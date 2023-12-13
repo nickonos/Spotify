@@ -68,6 +68,6 @@ jobs:
           manifests: |
             .github/manifests/song-deployment.yaml
             .github/manifests/song-service.yaml
+          namespace: student
           images: |
             ghcr.io/nickonos/spotify/song:${{ github.sha }}
-                

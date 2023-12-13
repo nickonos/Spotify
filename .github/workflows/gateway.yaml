@@ -68,6 +68,6 @@ jobs:
           manifests: |
             .github/manifests/gateway-deployment.yaml
             .github/manifests/gateway-service.yaml
+          namespace: student
           images: |
             ghcr.io/nickonos/spotify/gateway:${{ github.sha }}
-                

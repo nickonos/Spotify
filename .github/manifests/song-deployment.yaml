@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: song
-        envFrom:
-        - configMapRef:
-          name: song
         image: ghcr.io/nickonos/spotify/song
         ports:
         - containerPort: 5175
           name: rest
           protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: song
  

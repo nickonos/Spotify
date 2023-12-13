@@ -16,6 +16,9 @@ spec:
     spec:
       containers:
       - name: identity
+        envFrom:
+        - configMapRef:
+          identity
         image: ghcr.io/nickonos/spotify/identity
         ports:
         - containerPort: 5175

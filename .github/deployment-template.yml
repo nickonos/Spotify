@@ -16,8 +16,12 @@ spec:
     spec:
       containers:
       - name: {{ROUTE}}
+        envFrom:
+        - configMapRef:
+          {{ROUTE}}
         image: ghcr.io/nickonos/spotify/{{ROUTE}}
         ports:
         - containerPort: 5175
           name: rest
           protocol: TCP
+

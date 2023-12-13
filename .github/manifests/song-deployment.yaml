@@ -16,6 +16,9 @@ spec:
     spec:
       containers:
       - name: song
+        envFrom:
+        - configMapRef:
+          song
         image: ghcr.io/nickonos/spotify/song
         ports:
         - containerPort: 5175

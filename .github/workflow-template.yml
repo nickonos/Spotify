@@ -71,4 +71,4 @@ jobs:
           namespace: i468166
           images: |
             ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}
-     
+      

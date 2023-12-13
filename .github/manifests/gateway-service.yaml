@@ -6,8 +6,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - containerPort:
-    port: 5175
+  - port: 5175
+    targetPort: 5175  
     name: rest
     protocol: TCP
   selector:

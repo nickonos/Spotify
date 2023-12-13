@@ -62,11 +62,11 @@ jobs:
       - name: Login Kubernetes
         uses: ./K8s_setup_Nick.sh
       
-      - name: Deploy
-        uses: azure/k8s-deploy@v4
-        with: 
-          manifests: |
-            .github/manifests/gateway-deployment.yaml
-            .github/manifests/gateway-service.yaml
-          images: |
-            ghcr.io/nickonos/spotify/gateway:${{ github.sha }}      
+      # - name: Deploy
+      #   uses: azure/k8s-deploy@v4
+      #   with: 
+      #     manifests: |
+      #       .github/manifests/gateway-deployment.yaml
+      #       .github/manifests/gateway-service.yaml
+      #     images: |
+      #       ghcr.io/nickonos/spotify/gateway:${{ github.sha }}      

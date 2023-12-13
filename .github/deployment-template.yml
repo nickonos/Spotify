@@ -18,7 +18,7 @@ spec:
       - name: {{ROUTE}}
         envFrom:
         - configMapRef:
-          {{ROUTE}}
+          name: {{ROUTE}}
         image: ghcr.io/nickonos/spotify/{{ROUTE}}
         ports:
         - containerPort: 5175

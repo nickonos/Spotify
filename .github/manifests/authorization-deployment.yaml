@@ -18,7 +18,7 @@ spec:
       - name: authorization
         envFrom:
         - configMapRef:
-          authorization
+          name: authorization
         image: ghcr.io/nickonos/spotify/authorization
         ports:
         - containerPort: 5175

@@ -69,4 +69,5 @@ jobs:
             .github/manifests/authorization-deployment.yaml
             .github/manifests/authorization-service.yaml
           images: |
-            ghcr.io/nickonos/spotify/authorization:${{ github.sha }}      
+            ghcr.io/nickonos/spotify/authorization:${{ github.sha }}
+                

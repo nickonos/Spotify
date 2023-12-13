@@ -69,4 +69,5 @@ jobs:
             .github/manifests/identity-deployment.yaml
             .github/manifests/identity-service.yaml
           images: |
-            ghcr.io/nickonos/spotify/identity:${{ github.sha }}      
+            ghcr.io/nickonos/spotify/identity:${{ github.sha }}
+                

@@ -69,4 +69,5 @@ jobs:
             .github/manifests/gateway-deployment.yaml
             .github/manifests/gateway-service.yaml
           images: |
-            ghcr.io/nickonos/spotify/gateway:${{ github.sha }}      
+            ghcr.io/nickonos/spotify/gateway:${{ github.sha }}
+                

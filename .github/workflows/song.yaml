@@ -69,4 +69,5 @@ jobs:
             .github/manifests/song-deployment.yaml
             .github/manifests/song-service.yaml
           images: |
-            ghcr.io/nickonos/spotify/song:${{ github.sha }}      
+            ghcr.io/nickonos/spotify/song:${{ github.sha }}
+                

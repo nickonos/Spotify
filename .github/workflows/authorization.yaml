@@ -60,13 +60,13 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Login Kubernetes
-        uses: ./K8s_setup_Nick.sh
+        uses: ~/K8s_setup_Nick.sh
       
-      # - name: Deploy
-      #   uses: azure/k8s-deploy@v4
-      #   with: 
-      #     manifests: |
-      #       .github/manifests/authorization-deployment.yaml
-      #       .github/manifests/authorization-service.yaml
-      #     images: |
-      #       ghcr.io/nickonos/spotify/authorization:${{ github.sha }}      
+      - name: Deploy
+        uses: azure/k8s-deploy@v4
+        with: 
+          manifests: |
+            .github/manifests/authorization-deployment.yaml
+            .github/manifests/authorization-service.yaml
+          images: |
+            ghcr.io/nickonos/spotify/authorization:${{ github.sha }}      

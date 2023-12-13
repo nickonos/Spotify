@@ -38,6 +38,19 @@ services:
     links:
       - message_broker
       - song_db
+  authorization:
+    build:
+      dockerfile: services/authorization/Dockerfile
+      context: .
+    env_file:
+      - .env
+    depends_on:
+      song_db:
+        condition: service_healthy
+      message_broker:
+        condition: service_started
+    links:
+      - message_broker
   
   song_db:
     image: mysql:8.1

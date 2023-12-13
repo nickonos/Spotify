@@ -8,6 +8,8 @@ use ./services/identity
 
 use ./services/song
 
+use ./services/authorization
+
 // packages
 
 use ./packages/broker
@@ -17,3 +19,5 @@ use ./packages/logging
 use ./packages/routes
 
 use ./packages/identity
+
+use ./packages/fetch

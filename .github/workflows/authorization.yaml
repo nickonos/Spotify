@@ -1,15 +1,15 @@
-name: {{ROUTE}}
+name: authorization
 
 on:
   push:
     paths:
-      - "services/{{ROUTE}}/**"
+      - "services/authorization/**"
       - ".github/workflows/**"
     branches:
       - main
   pull_request:
     paths:
-      - "services/{{ROUTE}}/**"
+      - "services/authorization/**"
     branches:
       - main
 
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: services/{{ROUTE}}
+        working-directory: services/authorization
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
@@ -48,8 +48,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }} -f services/{{ROUTE}}/Dockerfile .
-          docker push ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}
+          docker build -t ghcr.io/nickonos/spotify/authorization:${{ github.sha }} -f services/authorization/Dockerfile .
+          docker push ghcr.io/nickonos/spotify/authorization:${{ github.sha }}
 
   deploy:
     runs-on: self-hosted
@@ -66,7 +66,7 @@ jobs:
         uses: azure/k8s-deploy@v4
         with: 
           manifests: |
-            .github/manifests/{{ROUTE}}-deployment.yaml
-            .github/manifests/{{ROUTE}}-service.yaml
+            .github/manifests/authorization-deployment.yaml
+            .github/manifests/authorization-service.yaml
           images: |
-            ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}      
+            ghcr.io/nickonos/spotify/authorization:${{ github.sha }}      

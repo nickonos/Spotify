@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorization
+spec:
+  progressDeadlineSeconds: 300
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorization
+  template:
+    metadata:
+      labels:
+        app: authorization
+    spec:
+      containers:
+        name: authorization
+        image: ghcr.io/nickonos/spotify/authorization
+        ports:
+        - containerPort: 5175
+          name: rest
+          protocol: TCP

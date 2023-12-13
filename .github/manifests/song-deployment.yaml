@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: song
-  namespace: student
+  namespace: i468166
 spec:
   progressDeadlineSeconds: 300
   replicas: 1
@@ -15,7 +15,7 @@ spec:
         app: song
     spec:
       containers:
-        name: song
+      - name: song
         image: ghcr.io/nickonos/spotify/song
         ports:
         - containerPort: 5175

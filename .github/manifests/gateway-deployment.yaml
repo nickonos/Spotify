@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gateway
-  namespace: student
+  namespace: i468166
 spec:
   progressDeadlineSeconds: 300
   replicas: 1
@@ -15,7 +15,7 @@ spec:
         app: gateway
     spec:
       containers:
-        name: gateway
+      - name: gateway
         image: ghcr.io/nickonos/spotify/gateway
         ports:
         - containerPort: 5175

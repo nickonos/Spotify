@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ROUTE}}
-  namespace: student
+  namespace: i468166
 spec:
   progressDeadlineSeconds: 300
   replicas: 1
@@ -15,7 +15,7 @@ spec:
         app: {{ROUTE}}
     spec:
       containers:
-        name: {{ROUTE}}
+      - name: {{ROUTE}}
         image: ghcr.io/nickonos/spotify/{{ROUTE}}
         ports:
         - containerPort: 5175

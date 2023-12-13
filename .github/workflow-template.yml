@@ -68,7 +68,7 @@ jobs:
           manifests: |
             .github/manifests/{{ROUTE}}-deployment.yaml
             .github/manifests/{{ROUTE}}-service.yaml
-          namespace: student
+          namespace: i468166
           images: |
             ghcr.io/nickonos/spotify/{{ROUTE}}:${{ github.sha }}
 

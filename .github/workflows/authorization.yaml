@@ -68,6 +68,6 @@ jobs:
           manifests: |
             .github/manifests/authorization-deployment.yaml
             .github/manifests/authorization-service.yaml
-          namespace: student
+          namespace: i468166
           images: |
             ghcr.io/nickonos/spotify/authorization:${{ github.sha }}

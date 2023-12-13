@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: authorization
-  namespace: student
+  namespace: i468166
 spec:
   progressDeadlineSeconds: 300
   replicas: 1
@@ -15,7 +15,7 @@ spec:
         app: authorization
     spec:
       containers:
-        name: authorization
+      - name: authorization
         image: ghcr.io/nickonos/spotify/authorization
         ports:
         - containerPort: 5175

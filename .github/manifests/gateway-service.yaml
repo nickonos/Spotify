@@ -12,5 +12,32 @@ spec:
     protocol: TCP
   selector:
     app: gateway
-
+---
+apiVersion: networking.k8.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway
+spec:
+  egress:
+  - ports:
+    - port: 4222
+      protocol: TCP
+    to:
+    - podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - messagebroker
+  ingress:
+  - from:
+    - podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - messagebroker
+    ports:
+    - port: 4222
+      protocol: TCP
     

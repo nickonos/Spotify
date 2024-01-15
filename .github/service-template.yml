@@ -17,6 +17,7 @@ apiVersion: v1
 kind: NetworkPolicy
 metadata:
   name: allow-{{ROUTE}}
+  namespace: i468166
 spec:
   egress:
   - ports:

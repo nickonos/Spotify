@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "services/{{ROUTE}}/**"
-      - ".github/workflows/**"
+      - ".github/workflows/{{ROUTE}}.yaml"
+      - ".github/manifests/{{ROUTE}}-service.yaml"
+      - ".github/manifests/{{ROUTE}}-deployment.yaml"
     branches:
       - main
   pull_request:

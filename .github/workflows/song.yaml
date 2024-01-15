@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "services/song/**"
-      - ".github/workflows/**"
+      - ".github/workflows/song.yaml"
+      - ".github/manifests/song-service.yaml"
+      - ".github/manifests/song-deployment.yaml"
     branches:
       - main
   pull_request:

@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "services/authorization/**"
-      - ".github/workflows/**"
+      - ".github/workflows/authorization.yaml"
+      - ".github/manifests/authorization-service.yaml"
+      - ".github/manifests/authorization-deployment.yaml"
     branches:
       - main
   pull_request:

@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "services/identity/**"
-      - ".github/workflows/**"
+      - ".github/workflows/identity.yaml"
+      - ".github/manifests/identity-service.yaml"
+      - ".github/manifests/identity-deployment.yaml"
     branches:
       - main
   pull_request:

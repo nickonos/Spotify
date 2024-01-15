@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - "services/gateway/**"
-      - ".github/workflows/**"
+      - ".github/workflows/gateway.yaml"
+      - ".github/manifests/gateway-service.yaml"
+      - ".github/manifests/gateway-deployment.yaml"
     branches:
       - main
   pull_request:

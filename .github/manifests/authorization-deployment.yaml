@@ -7,6 +7,7 @@ spec:
   progressDeadlineSeconds: 300
   replicas: 1
   selector:
+    app: authorization
     matchLabels:
       app: authorization
   template:

@@ -12,33 +12,4 @@ spec:
     protocol: TCP
   selector:
     app: {{ROUTE}}
----
-apiVersion: v1
-kind: NetworkPolicy
-metadata:
-  name: allow-{{ROUTE}}
-  namespace: i468166
-spec:
-  egress:
-  - ports:
-    - port: 4222
-      protocol: TCP
-    to:
-    - podSelector:
-        matchExpressions:
-        - key: app
-          operator: In
-          values:
-          - messagebroker
-  ingress:
-  - from:
-    - podSelector:
-        matchExpressions:
-        - key: app
-          operator: In
-          values:
-          - messagebroker
-    ports:
-    - port: 4222
-      protocol: TCP
     

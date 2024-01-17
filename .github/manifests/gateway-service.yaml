@@ -12,33 +12,4 @@ spec:
     protocol: TCP
   selector:
     app: gateway
----
-apiVersion: v1
-kind: NetworkPolicy
-metadata:
-  name: allow-gateway
-  namespace: i468166
-spec:
-  egress:
-  - ports:
-    - port: 4222
-      protocol: TCP
-    to:
-    - podSelector:
-        matchExpressions:
-        - key: app
-          operator: In
-          values:
-          - messagebroker
-  ingress:
-  - from:
-    - podSelector:
-        matchExpressions:
-        - key: app
-          operator: In
-          values:
-          - messagebroker
-    ports:
-    - port: 4222
-      protocol: TCP
     

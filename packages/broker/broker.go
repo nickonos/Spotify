@@ -40,7 +40,7 @@ func newBroker(nc *nats.Conn, js nats.JetStreamContext) *Broker {
 	})
 
 	if err != nil {
-		logger.Print(err.Error())
+		logger.Fatal(err)
 	}
 
 	kv, new := js.CreateKeyValue(&nats.KeyValueConfig{
@@ -50,7 +50,7 @@ func newBroker(nc *nats.Conn, js nats.JetStreamContext) *Broker {
 	})
 
 	if new != nil {
-		logger.Print(err.Error())
+		logger.Fatal(err)
 	}
 
 	return &Broker{
@@ -76,7 +76,7 @@ func NewMessageBroker() *Broker {
 
 	// As the broker is a critical component, we panic if we cannot connect
 	if err != nil {
-		logger.Print(err.Error())
+		logger.Fatal(err)
 	}
 
 	// JetStream context
@@ -86,7 +86,7 @@ func NewMessageBroker() *Broker {
 	js, err := nc.JetStream(jsOpts...)
 
 	if err != nil {
-		logger.Print(err.Error())
+		logger.Fatal(err)
 	}
 
 	return newBroker(nc, js)

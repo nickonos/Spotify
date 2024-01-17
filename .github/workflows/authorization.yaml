@@ -7,6 +7,7 @@ on:
       - ".github/workflows/authorization.yaml"
       - ".github/manifests/authorization-service.yaml"
       - ".github/manifests/authorization-deployment.yaml"
+      - "packages/**/**"
     branches:
       - main
   pull_request:

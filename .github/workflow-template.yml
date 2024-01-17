@@ -7,6 +7,7 @@ on:
       - ".github/workflows/{{ROUTE}}.yaml"
       - ".github/manifests/{{ROUTE}}-service.yaml"
       - ".github/manifests/{{ROUTE}}-deployment.yaml"
+      - "packages/**/**"
     branches:
       - main
   pull_request:

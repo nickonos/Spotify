@@ -7,7 +7,6 @@ spec:
   progressDeadlineSeconds: 300
   replicas: 1
   selector:
-    app: song
     matchLabels:
       app: song
   template:

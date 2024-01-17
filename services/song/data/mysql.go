@@ -43,8 +43,9 @@ func NewMysqlDatabase() (DB, error) {
 
 func init_db(db *sqlx.DB) error {
 	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS songs (
-		id bigint,
-		name varchar(255)
+		id bigint NOT NULL,
+		name varchar(255),
+		PRIMARY KEY (id)
 	);`)
 	if err != nil {
 		return err

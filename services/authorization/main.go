@@ -9,7 +9,9 @@ import (
 func main() {
 	logger := logging.NewLogger("Authorization")
 
+	logger.Print("Connecting with message broker")
 	brk := broker.NewMessageBroker()
+	logger.Print("Connected with message broker")
 	handler := api.NewAPIHandler(*brk)
 	handler.Subscribe()
 

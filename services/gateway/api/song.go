@@ -8,7 +8,7 @@ import (
 
 func (api *API) GetSong(c *fiber.Ctx) error {
 	var req routes.GetSongRequest
-	err := c.BodyParser(&req)
+	err := c.ParamsParser(&req)
 	if err != nil {
 		return c.Status(400).JSON(&fiber.Map{
 			"success": false,

@@ -18,7 +18,6 @@ func NewAPIHandler(s *service.IdentityService, b *broker.Broker) APIHandler {
 		service: s,
 		broker:  b,
 	}
-
 }
 
 func (api *APIHandler) Subscribe() {

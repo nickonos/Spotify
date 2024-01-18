@@ -44,7 +44,6 @@ func (api *APIHandler) Subscribe() {
 	})
 
 	broker.Subscribe(api.broker, func(ctx context.Context, message routes.GetSongsRequest) (routes.GetSongsResponse, error) {
-
 		songs, err := api.service.GetAllSongs(ctx)
 		if err != nil {
 			return routes.GetSongsResponse{}, err

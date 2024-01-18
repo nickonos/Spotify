@@ -7,17 +7,19 @@ import (
 )
 
 func (api *API) GetSong(c *fiber.Ctx) error {
-	var req routes.GetSongRequest
-	err := c.ParamsParser(&req)
-	if err != nil {
+	req := routes.GetSongRequest{
+		Name: c.Params("name"),
+	}
+
+	if req.Name == "" {
 		return c.Status(400).JSON(&fiber.Map{
 			"success": false,
-			"error":   err.Error(),
+			"error":   "missing name query parameter",
 		})
 	}
 
 	var res broker.Response[routes.GetSongResponse]
-	err = broker.Request(api.broker, req, &res)
+	err := broker.Request(api.broker, req, &res)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"success": false,
@@ -33,8 +35,8 @@ func (api *API) GetSong(c *fiber.Ctx) error {
 	}
 
 	return c.Status(200).JSON(&fiber.Map{
-		"successs": true,
-		"data":     res.Data.Song,
+		"success": true,
+		"data":    res.Data.Song,
 	})
 }
 

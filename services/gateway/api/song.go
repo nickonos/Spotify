@@ -8,7 +8,7 @@ import (
 
 func (api *API) GetSong(c *fiber.Ctx) error {
 	req := routes.GetSongRequest{
-		Name: c.Params("name"),
+		Name: c.Query("name"),
 	}
 
 	if req.Name == "" {

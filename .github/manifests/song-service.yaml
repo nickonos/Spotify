@@ -4,9 +4,9 @@ metadata:
   name: song
   namespace: i468166
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
-  - port: 5175
+  - port: 80
     targetPort: 5175  
     name: rest
     protocol: TCP

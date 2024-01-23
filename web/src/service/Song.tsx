@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useSessionProvider } from "./SessionProvider"
+import { json } from "stream/consumers"
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL
 
 type Song = {
@@ -21,5 +22,17 @@ export const useSongByName = (name: string) => {
             return null
 
         return res.json().then(json => json.data) 
+    })})
+}
+
+export const useCreateSong = () => {
+    const {jwt} = useSessionProvider()
+
+    return useMutation({mutationKey: ["song"], mutationFn: (song: Omit<Song, "id">) => fetch(GATEWAY_URL + "/api/song", {
+        method: "POST",
+        body: JSON.stringify(song),
+        headers: {
+            Authorization: jwt
+        }
     })})
 }

@@ -12,9 +12,9 @@ type CreateSongResponse struct {
 }
 
 type CreateSongRequest struct {
-	Name     string
-	Artist   string
-	CoverUrl string
+	Name     string `json:"name"`
+	Artist   string `json:"artist"`
+	CoverUrl string `json:"cover_url"`
 }
 
 func (CreateSongRequest) Subject() string {

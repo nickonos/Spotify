@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { useSessionProvider } from "./SessionProvider"
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL
 
 type Song = {
@@ -9,7 +10,13 @@ type Song = {
 }
 
 export const useSongByName = (name: string) => {
-    return useQuery<Song>({queryKey: ["song", name], queryFn: () => fetch(GATEWAY_URL + "/api/song?name=" + name).then((res)=> {
+    const {jwt} = useSessionProvider()
+
+    return useQuery<Song>({queryKey: ["song", name], queryFn: () => fetch(GATEWAY_URL + "/api/song?name=" + name, {
+        headers: {
+            Authorization: jwt
+        }
+    }).then((res)=> {
         if (!res.ok)
             return null
 

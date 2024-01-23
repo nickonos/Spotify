@@ -1,5 +1,4 @@
 import { jwtDecode } from "jwt-decode"
-import { LogOut } from "lucide-react"
 import React, { useContext, useEffect } from "react"
 import { useCookies } from "react-cookie"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"

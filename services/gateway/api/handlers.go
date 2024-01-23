@@ -24,5 +24,5 @@ func (api *API) SetupRoutes() {
 	router.Get("/song", api.GetSong)
 	router.Get("/songs", api.GetAllSongs)
 	router.Post("/song", api.CreateSong)
-
+	router.Get("/login", api.Login)
 }

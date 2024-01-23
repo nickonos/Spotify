@@ -17,8 +17,16 @@ require github.com/nickonos/Spotify/packages/logging v0.0.0
 
 require github.com/nickonos/Spotify/packages/broker v0.0.0
 
+require github.com/nickonos/Spotify/packages/routes v0.0.0
+
+require (
+	github.com/go-sql-driver/mysql v1.7.1 // indirect
+	github.com/jmoiron/sqlx v1.3.5 // indirect
+)
+
 require (
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/klauspost/compress v1.17.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

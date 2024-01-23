@@ -7,7 +7,7 @@ services:
     ports:
       - "5175:5175"
     environment:
-      NATS_URL: nats://message_broker:4222
+      NATS_URL: ${NATS_URL}
     depends_on:
       - message_broker
     links:
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: services/identity/Dockerfile
     environment:
-      NATS_URL: nats://message_broker:4222
+      NATS_URL: ${NATS_URL}
     depends_on:
       - message_broker
     links:
@@ -38,19 +38,42 @@ services:
     links:
       - message_broker
       - song_db
+
   authorization:
     build:
       dockerfile: services/authorization/Dockerfile
       context: .
-    env_file:
-      - .env
+    environment:
+      NATS_URL: ${NATS_URL}
+      SPOTIFY_URL: ${SPOTIFY_URL}
+      SPOTIFY_AUTH_URL: ${SPOTIFY_AUTH_URL}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      DB_STRING: root:root@tcp(authorization_db:3306)/authorization
+      TOKEN_SECRET: ${TOKEN_SECRET}
     depends_on:
-      song_db:
+      authorization_db:
         condition: service_healthy
       message_broker:
         condition: service_started
     links:
       - message_broker
+      - authorization_db
+
+  authorization_db:
+    image: mysql:8.1
+    restart: always
+    environment:
+      MYSQL_DATABASE: authorization
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - authorization_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 30s
+      retries: 10
   
   song_db:
     image: mysql:8.1
@@ -76,4 +99,6 @@ services:
       - "8222:8222"
 volumes:
   song_db:
+    driver: local
+  authorization_db:
     driver: local

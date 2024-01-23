@@ -8,6 +8,7 @@ services:
       - "5175:5175"
     environment:
       NATS_URL: ${NATS_URL}
+      TOKEN_SECRET: ${TOKEN_SECRET}
     depends_on:
       - message_broker
     links:

@@ -6,7 +6,6 @@ import (
 
 	"github.com/golang-jwt/jwt"
 
-	"github.com/nickonos/Spotify/packages/logging"
 	"github.com/nickonos/Spotify/services/authorization/data"
 	"github.com/nickonos/Spotify/services/authorization/spotify"
 )
@@ -42,8 +41,12 @@ type JWTClaims struct {
 func (a AuthorizationService) LoginUser(ctx context.Context, code string) (string, error) {
 	if code == "admin" {
 		accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
+
 			Role:  "admin",
 			Email: "admin@spotify.com",
+			StandardClaims: jwt.StandardClaims{
+				Subject: "admin@spotify.com",
+			},
 		})
 
 		token, err := accessToken.SignedString([]byte(os.Getenv("TOKEN_SECRET")))
@@ -65,8 +68,6 @@ func (a AuthorizationService) LoginUser(ctx context.Context, code string) (strin
 
 	role, err := a.db.GetUserRole(ctx, email)
 	if err != nil {
-		log := logging.NewLogger("a")
-		log.Print(err.Error())
 		err = a.db.AddUserRole(ctx, email)
 		if err != nil {
 			return "", err
@@ -78,6 +79,9 @@ func (a AuthorizationService) LoginUser(ctx context.Context, code string) (strin
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
 		Role:  role,
 		Email: email,
+		StandardClaims: jwt.StandardClaims{
+			Subject: email,
+		},
 	})
 
 	token, err := accessToken.SignedString([]byte(os.Getenv("TOKEN_SECRET")))

@@ -3,11 +3,15 @@ package api
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/nickonos/Spotify/packages/broker"
-	"github.com/nickonos/Spotify/packages/logging"
 	"github.com/nickonos/Spotify/packages/routes"
 )
 
 func (api *API) GetSong(c *fiber.Ctx) error {
+	err := ValidateRequest(c.GetReqHeaders()["Authorization"], "")
+	if err != nil {
+		return c.Status(fiber.ErrUnauthorized.Code).SendString(err.Error())
+	}
+
 	req := routes.GetSongRequest{
 		Name: c.Query("name"),
 	}
@@ -19,11 +23,8 @@ func (api *API) GetSong(c *fiber.Ctx) error {
 		})
 	}
 
-	log := logging.NewLogger("a")
-	log.Print(req.Name)
-
 	var res broker.Response[routes.GetSongResponse]
-	err := broker.Request(api.broker, req, &res)
+	err = broker.Request(api.broker, req, &res)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"success": false,
@@ -45,8 +46,13 @@ func (api *API) GetSong(c *fiber.Ctx) error {
 }
 
 func (api *API) CreateSong(c *fiber.Ctx) error {
+	err := ValidateRequest(c.GetReqHeaders()["Authorization"], "admin")
+	if err != nil {
+		return c.Status(fiber.ErrUnauthorized.Code).SendString(err.Error())
+	}
+
 	var req routes.CreateSongRequest
-	err := c.BodyParser(&req)
+	err = c.BodyParser(&req)
 	if err != nil {
 		return c.Status(400).JSON(&fiber.Map{
 			"success": false,
@@ -77,10 +83,14 @@ func (api *API) CreateSong(c *fiber.Ctx) error {
 }
 
 func (api *API) GetAllSongs(c *fiber.Ctx) error {
+	err := ValidateRequest(c.GetReqHeaders()["Authorization"], "")
+	if err != nil {
+		return c.Status(fiber.ErrUnauthorized.Code).SendString(err.Error())
+	}
 	var req routes.GetSongsRequest
 
 	var res broker.Response[routes.GetSongsResponse]
-	err := broker.Request(api.broker, req, &res)
+	err = broker.Request(api.broker, req, &res)
 	if err != nil {
 		return c.Status(500).JSON(&fiber.Map{
 			"success": false,

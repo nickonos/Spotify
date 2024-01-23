@@ -8,7 +8,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
+	"strings"
 )
 
 type Operations struct {
@@ -48,19 +50,35 @@ type GetAccessTokenResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
+type GetAccessTokenBody struct {
+	Code        string `json:"code"`
+	GrantType   string `json:"grant_type"`
+	RedirectURI string `json:"redirect_uri"`
+}
+
 func (op Operations) GetAccessToken(ctx context.Context, code string) (string, error) {
 	client := &http.Client{}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", op.auth_url+TOKEN_ENDPOINT, nil)
+	data := url.Values{}
+	data.Set("code", code)
+	data.Set("grant_type", "authorization_code")
+	data.Set("redirect_uri", "http://localhost:5173/auth/callback")
+	// b, err := json.Marshal(GetAccessTokenBody{
+	// 	Code:        code,
+	// 	GrantType:   "authorization_code",
+	// 	RedirectURI: "http://localhost:5173/auth/callback",
+	// })
+	// if err != nil {
+	// 	return "", err
+	// }
+
+	req, err := http.NewRequestWithContext(ctx, "POST", op.auth_url+TOKEN_ENDPOINT, strings.NewReader(data.Encode()))
 	if err != nil {
 		return "", err
 	}
 
 	req.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", op.client_id, op.client_secret))))
 	req.Header.Add("content-type", "application/x-www-form-urlencoded")
-	req.Form.Add("code", code)
-	req.Form.Add("grant_type", "authorization_code")
-	req.Form.Add("redirect_uri", "/")
 
 	res, err := client.Do(req)
 	if err != nil {

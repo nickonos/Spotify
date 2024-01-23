@@ -27,13 +27,12 @@ func NewSongService(db data.DB, id identity.IdentityHelper) *SongService {
 	}
 }
 
-func (s *SongService) CreateSong(ctx context.Context, name string) (routes.Song, error) {
+func (s *SongService) CreateSong(ctx context.Context, name string, artist string, cover_url string) (routes.Song, error) {
 	id, err := s.id.NewID()
 	if err != nil {
 		return routes.Song{}, err
 	}
-
-	err = s.db.AddSong(ctx, id, name)
+	err = s.db.AddSong(ctx, id, name, artist, cover_url)
 	if err != nil {
 		return routes.Song{}, err
 	}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt"
 
+	"github.com/nickonos/Spotify/packages/logging"
 	"github.com/nickonos/Spotify/services/authorization/data"
 	"github.com/nickonos/Spotify/services/authorization/spotify"
 )
@@ -64,6 +65,8 @@ func (a AuthorizationService) LoginUser(ctx context.Context, code string) (strin
 
 	role, err := a.db.GetUserRole(ctx, email)
 	if err != nil {
+		log := logging.NewLogger("a")
+		log.Print(err.Error())
 		err = a.db.AddUserRole(ctx, email)
 		if err != nil {
 			return "", err

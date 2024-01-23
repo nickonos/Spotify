@@ -10,7 +10,7 @@ import (
 )
 
 type DB interface {
-	AddSong(ctx context.Context, id int64, name string) error
+	AddSong(ctx context.Context, id int64, name string, artist string, cover_url string) error
 	GetSong(ctx context.Context, name string) (routes.Song, error)
 	GetAllSongs(ctx context.Context) ([]routes.Song, error)
 }
@@ -54,14 +54,14 @@ func init_db(db *sqlx.DB) error {
 	return nil
 }
 
-func (p *MysqlDatabase) AddSong(ctx context.Context, id int64, name string) error {
-	_, err := p.db.ExecContext(ctx, `INSERT INTO songs (id, name) VALUES (?, ?);`, id, name)
+func (p *MysqlDatabase) AddSong(ctx context.Context, id int64, name string, artist string, cover_url string) error {
+	_, err := p.db.ExecContext(ctx, `INSERT INTO songs (id, name, artist, cover_url) VALUES (?, ?, ? , ?);`, id, name, artist, cover_url)
 	return err
 }
 
 func (p *MysqlDatabase) GetSong(ctx context.Context, name string) (routes.Song, error) {
 	var song routes.Song
-	err := p.db.QueryRowxContext(ctx, `SELECT id, name FROM songs WHERE name = ?`, name).StructScan(&song)
+	err := p.db.QueryRowxContext(ctx, `SELECT id, name, artist, cover_url FROM songs WHERE name = ?`, name).StructScan(&song)
 	if err != nil {
 		return routes.Song{}, err
 	}

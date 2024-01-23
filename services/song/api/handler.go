@@ -22,7 +22,7 @@ func NewAPIHandler(s *service.SongService, b *broker.Broker) APIHandler {
 
 func (api *APIHandler) Subscribe() {
 	broker.Subscribe(api.broker, func(ctx context.Context, message routes.CreateSongRequest) (routes.CreateSongResponse, error) {
-		song, err := api.service.CreateSong(ctx, message.Name)
+		song, err := api.service.CreateSong(ctx, message.Name, message.Artist, message.CoverUrl)
 		if err != nil {
 			return routes.CreateSongResponse{}, err
 		}

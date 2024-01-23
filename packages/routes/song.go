@@ -1,8 +1,10 @@
 package routes
 
 type Song struct {
-	Name string `db:"name"`
-	Id   int64  `db:"id"`
+	Name     string `db:"name" json:"name"`
+	Id       int64  `db:"id" json:"id"`
+	Artist   string `db:"artist" json:"artist"`
+	CoverUrl string `db:"cover_url" json:"cover_url"`
 }
 
 type CreateSongResponse struct {
@@ -10,7 +12,9 @@ type CreateSongResponse struct {
 }
 
 type CreateSongRequest struct {
-	Name string
+	Name     string
+	Artist   string
+	CoverUrl string
 }
 
 func (CreateSongRequest) Subject() string {

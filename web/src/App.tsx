@@ -1,48 +1,63 @@
-import { ReactNode } from 'react'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from './components/ui/resizable'
-import { HomeIcon, SearchIcon } from './components/icons';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { CallbackPage } from "./pages/Callback";
+import { LoginPage } from "./pages/Login";
+import { Layout } from "./components/ui/layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthenticationProvider } from "./service/AuthenticationProvider";
+import { SearchPage } from "./pages/Search";
+import { HomePage } from "./pages/Home";
+import { UploadPage } from "./pages/Upload";
+
+const router = createBrowserRouter([
+  {
+    path: "*",
+    element: <AuthenticationProvider />,
+    children: [
+      {
+        path: "auth",
+        children: [
+          {
+            path: "callback",
+            element: <CallbackPage />,
+          },
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <Layout />,
+        children: [
+          {
+            path: "search",
+            element: <SearchPage />,
+          },
+          {
+            path: "upload",
+            element: <UploadPage />
+          },
+          {
+            path: "*",
+            element: <HomePage />,
+          },
+        ],
+      },
+    ],
+  },
+]);
+
+const queryClient = new QueryClient();
 
 function App() {
-
   return (
-    <body className="dark h-screen">
-
-      <Layout>hello</Layout>
-    </body>
-  )
+    <div className="dark h-screen bg-[#0C0A09] text-white">
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </div>
+  );
 }
 
-export default App
-
-
-const Layout = ({children}: {children: ReactNode}) => (
-  <ResizablePanelGroup
-    direction={"horizontal"}
-    className="flex h-screen w-screen gap-1 p-2"
-  >
-    <ResizablePanel
-      defaultSize={20}
-      maxSize={40}
-      className="h-full bg-black p-1"
-    >
-      <ResizablePanelGroup direction="vertical" className="flex gap-1">
-        <ResizablePanel defaultSize={10}>
-          <div className="flex">
-            <HomeIcon />
-            <div>Home</div>
-          </div>
-          <div className="flex">
-            <SearchIcon />
-            <div>Search</div>
-          </div>
-        </ResizablePanel>
-        <ResizableHandle hidden />
-        <ResizablePanel></ResizablePanel>
-      </ResizablePanelGroup>
-    </ResizablePanel>
-    <ResizableHandle hidden />
-    <ResizablePanel>
-      {children}
-    </ResizablePanel>
-  </ResizablePanelGroup>
-);
+export default App;

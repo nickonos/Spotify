@@ -58,7 +58,7 @@ func (p *MysqlDatabase) AddUserRole(ctx context.Context, email string) error {
 }
 
 type UserRole struct {
-	role string `db:"role"`
+	Role string `db:"role"`
 }
 
 func (p *MysqlDatabase) GetUserRole(ctx context.Context, email string) (string, error) {
@@ -67,5 +67,5 @@ func (p *MysqlDatabase) GetUserRole(ctx context.Context, email string) (string, 
 	if err != nil {
 		return "", err
 	}
-	return user_role.role, nil
+	return user_role.Role, nil
 }

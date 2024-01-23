@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/nickonos/Spotify/packages/broker"
+	"github.com/nickonos/Spotify/packages/logging"
 	"github.com/nickonos/Spotify/packages/routes"
 )
 
@@ -17,6 +18,9 @@ func (api *API) GetSong(c *fiber.Ctx) error {
 			"error":   "missing name query parameter",
 		})
 	}
+
+	log := logging.NewLogger("a")
+	log.Print(req.Name)
 
 	var res broker.Response[routes.GetSongResponse]
 	err := broker.Request(api.broker, req, &res)
